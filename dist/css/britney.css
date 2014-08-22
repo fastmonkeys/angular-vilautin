@@ -1,0 +1,61 @@
+.britney-notifications {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  z-index: 1001;
+}
+.britney-notifications .notification {
+  position: relative;
+  padding: 5px;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.3);
+  text-align: center;
+  /* ANIMATIONS */
+  -webkit-transition: 0.5s linear opacity;
+  transition: 0.5s linear opacity;
+}
+.britney-notifications .notification .message .glyphicon {
+  font-size: 1.2em;
+  top: 3px;
+}
+.britney-notifications .notification.info {
+  background-color: rgba(0, 0, 255, 0.5);
+  color: #000064;
+}
+.britney-notifications .notification.info:hover {
+  color: rgba(0, 0, 100, 0.8);
+}
+.britney-notifications .notification.success {
+  background-color: rgba(0, 255, 0, 0.5);
+  color: #006400;
+}
+.britney-notifications .notification.success:hover {
+  color: rgba(0, 100, 0, 0.8);
+}
+.britney-notifications .notification.warning {
+  background-color: rgba(255, 0, 0, 0.5);
+  color: #640000;
+}
+.britney-notifications .notification.warning:hover {
+  color: rgba(80, 0, 0, 0.6);
+}
+.britney-notifications .notification:hover {
+  cursor: pointer;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.2);
+}
+.britney-notifications .notification:hover .message .glyphicon {
+  color: rgba(255, 255, 255, 0.9);
+}
+.britney-notifications .notification.ng-enter {
+  opacity: 0;
+}
+.britney-notifications .notification.ng-enter.ng-enter-active {
+  opacity: 1;
+}
+.britney-notifications .notification.ng-leave {
+  opacity: 1;
+}
+.britney-notifications .notification.ng-leave.ng-leave-active {
+  opacity: 0;
+}
