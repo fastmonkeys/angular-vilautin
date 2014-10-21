@@ -27,10 +27,11 @@
 
   ],
   "dependencies": {
-    "angular-animate": "1.2.22",
-    "underscore": "1.6.0"
+    "angular": "1.2.x",
+    "angular-animate": "1.2.x",
+    "underscore": "*"
   },
   "devDependencies": {
-    "angular-mocks": "1.2.22"
+    "angular-mocks": "1.2.x"
   }
 }
