@@ -1,5 +1,8 @@
 Britney Flasher
 ================
+
+[![Circle CI](https://circleci.com/gh/fastmonkeys/britney.svg?style=svg&circle-token=67f1b2286f7cd5f67907e2bf8b9251f816eccac5)](https://circleci.com/gh/fastmonkeys/britney)
+
 AngularJS powered flash notification service for easily showing flash notifications.
 
 Installation
