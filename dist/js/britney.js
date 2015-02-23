@@ -19,28 +19,47 @@ angular.module('britney').factory('Flasher', ['$rootScope', function($rootScope)
     riggedNotifications = [];
 
   function sendNotification(notification) {
-    if (!_.contains(VALID_SEVERITIES, notification.severity)) {
+    if (VALID_SEVERITIES.indexOf(notification.severity) === -1) {
       delete notification.severity;
     }
-    notification = _.extend({}, notificationDefaults, notification);
-    notification.id = _.uniqueId('notification_');
+    notification = angular.extend({}, notificationDefaults, notification);
+    notification.id = getUniqueId('notification_');
     $rootScope.$broadcast(NOTIFICATION_EVENT, notification);
   }
 
   function showFlashNotification(notification) {
-    notification = _.pick(notification, 'message', 'severity');
-    sendNotification(notification);
+    sendNotification(pickNotificationAttributes(notification));
   }
 
   function showStickyNotification(notification) {
-    notification = _.pick(notification, 'message', 'severity');
-    _.extend(notification, stickyDefaults);
-    sendNotification(notification);
+    var filteredNotification = pickNotificationAttributes(notification);
+    angular.extend(filteredNotification, stickyDefaults);
+    sendNotification(filteredNotification);
   }
 
   function rigRouteNotification(notification, route) {
-    notification = _.pick(notification, 'message', 'severity', 'sticky');
-    riggedNotifications.push([route, notification]);
+    riggedNotifications.push([route, pickNotificationAttributes(notification)]);
+  }
+
+  function pickNotificationAttributes(notification) {
+    var filteredNotification = {};
+
+    if(notification.message) {
+      filteredNotification.message = notification.message;
+    }
+    if(notification.severity) {
+      filteredNotification.severity = notification.severity;
+    }
+    if(notification.sticky) {
+      filteredNotification.sticky = notification.sticky;
+    }
+
+    return filteredNotification;
+  }
+
+  var uniqueIdCounter = 0;
+  function getUniqueId(prefix) {
+    return prefix + uniqueIdCounter++;
   }
 
   function _dispatchRiggedNotifications(route) {
@@ -82,14 +101,14 @@ angular.module('britney')
 
     function isValidNotification(notification) {
       function isValidNotificationId() {
-        return _.isString(notification.id) &&
+        return angular.isString(notification.id) &&
           notification.id.indexOf('notification_') === 0;
       }
 
       return isValidNotificationId() &&
-             _.isString(notification.message) &&
-             _.isString(notification.severity) &&
-             _.isBoolean(notification.sticky);
+             angular.isString(notification.message) &&
+             angular.isString(notification.severity) &&
+             typeof notification.sticky === 'boolean';
     }
 
     function appendNotification(event, notification) {

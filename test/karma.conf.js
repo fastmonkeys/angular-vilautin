@@ -10,7 +10,6 @@ module.exports = function(config) {
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-animate/angular-animate.js',
-      'bower_components/underscore/underscore.js',
       'src/britney.js',
       'src/notification-controller.js',
       'src/notification-service.js',
