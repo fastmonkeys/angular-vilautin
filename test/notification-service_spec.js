@@ -24,7 +24,7 @@ describe('Service: NotificationService', function() {
       eventName = args[0], 
       notification = args[1];
     expect(eventName).toBe(notificationEvent);
-    expect(_.isObject(notification)).toBe(true);
+    expect(angular.isObject(notification)).toBe(true);
     expect(notification.id).toMatch('notification_');
     return notification;
   }

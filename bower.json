@@ -27,8 +27,7 @@
   ],
   "dependencies": {
     "angular": ">=1.2.0",
-    "angular-animate": ">=1.2.0",
-    "underscore": "*"
+    "angular-animate": ">=1.2.0"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.0"

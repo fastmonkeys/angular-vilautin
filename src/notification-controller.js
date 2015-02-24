@@ -10,14 +10,14 @@ angular.module('britney')
 
     function isValidNotification(notification) {
       function isValidNotificationId() {
-        return _.isString(notification.id) &&
+        return angular.isString(notification.id) &&
           notification.id.indexOf('notification_') === 0;
       }
 
       return isValidNotificationId() &&
-             _.isString(notification.message) &&
-             _.isString(notification.severity) &&
-             _.isBoolean(notification.sticky);
+             angular.isString(notification.message) &&
+             angular.isString(notification.severity) &&
+             typeof notification.sticky === 'boolean';
     }
 
     function appendNotification(event, notification) {

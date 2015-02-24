@@ -32,7 +32,7 @@ describe('Controller: FlasherCtrl', function() {
   });
 
   it('has the correct initial state', function() {
-    expect(_.isObject($scope.notifications)).toBe(true);
+    expect(angular.isObject($scope.notifications)).toBe(true);
   });
 
   it('removes correct notification when calling removeNotification', function() {
@@ -67,27 +67,27 @@ describe('Controller: FlasherCtrl', function() {
   it('does not add invalid notifications to the scope when add-notification -event is triggered on $rootScope', function() {
 
     // invalid id (not a String)
-    $rootScope.$broadcast('event:add-notification', _.extend({}, stickyNotification, { id: 123 }));
+    $rootScope.$broadcast('event:add-notification', angular.extend({}, stickyNotification, { id: 123 }));
     $rootScope.$digest();
     expect($scope.notifications[123]).toBeUndefined();
 
     // invalid id (does not start with 'notification_')
-    $rootScope.$broadcast('event:add-notification', _.extend({}, stickyNotification, { id: 'failification_2' }));
+    $rootScope.$broadcast('event:add-notification', angular.extend({}, stickyNotification, { id: 'failification_2' }));
     $rootScope.$digest();
     expect($scope.notifications[123]).toBeUndefined();
 
     // invalid message (not a String)
-    $rootScope.$broadcast('event:add-notification', _.extend({}, stickyNotification, { message: 123 }));
+    $rootScope.$broadcast('event:add-notification', angular.extend({}, stickyNotification, { message: 123 }));
     $rootScope.$digest();
     expect($scope.notifications[stickyNotification.id]).toBeUndefined();
 
     // invalid severity (not a String)
-    $rootScope.$broadcast('event:add-notification', _.extend({}, stickyNotification, { severity: ['error'] }));
+    $rootScope.$broadcast('event:add-notification', angular.extend({}, stickyNotification, { severity: ['error'] }));
     $rootScope.$digest();
     expect($scope.notifications[stickyNotification.id]).toBeUndefined();
 
     // invalid stickiness (not a Boolean)
-    $rootScope.$broadcast('event:add-notification', _.extend({}, stickyNotification, { sticky: 'like syrup' }));
+    $rootScope.$broadcast('event:add-notification', angular.extend({}, stickyNotification, { sticky: 'like syrup' }));
     $rootScope.$digest();
     expect($scope.notifications[stickyNotification.id]).toBeUndefined();
 
