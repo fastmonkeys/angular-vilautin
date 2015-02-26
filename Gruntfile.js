@@ -1,38 +1,11 @@
 'use strict';
 
 module.exports = function (grunt) {
-
   require('load-grunt-tasks')(grunt);
-
   require('time-grunt')(grunt);
 
-  var appConfig = {
-    dist: 'dist'
-  };
 
   grunt.initConfig({
-
-    yeoman: appConfig,
-
-    jshint: {
-      options: {
-        jshintrc: '.jshintrc',
-        reporter: require('jshint-stylish')
-      },
-      all: {
-        src: [
-          'Gruntfile.js',
-          'src/{,*/}*.js'
-        ]
-      },
-      test: {
-        options: {
-          jshintrc: 'test/.jshintrc'
-        },
-        src: ['test/spec/{,*/}*.js']
-      }
-    },
-
     clean: {
       dist: {
         files: [{
@@ -43,35 +16,6 @@ module.exports = function (grunt) {
             '!<%= yeoman.dist %>/.git*'
           ]
         }]
-      }
-    },
-
-    uglify: {
-       dist: {
-         files: {
-           '<%= yeoman.dist %>/js/britney.min.js': [
-             'src/britney.module.js',
-             'src/britney.factory.js',
-             'src/britney.controller.js',
-             'src/britney.directive.js'
-           ]
-         }
-       }
-    },
-
-    less: {
-      development: {
-        files: {
-          '<%= yeoman.dist %>/css/britney.css': ' styles/britney.less'
-        }
-      }
-    },
-
-    cssmin: {
-      default: {
-        files: {
-          '<%= yeoman.dist %>/css/britney.min.css': '<%= yeoman.dist %>/css/britney.css'
-        }
       }
     },
 
@@ -101,11 +45,63 @@ module.exports = function (grunt) {
       }
     },
 
+    cssmin: {
+      default: {
+        files: {
+          '<%= yeoman.dist %>/css/britney.min.css': '<%= yeoman.dist %>/css/britney.css'
+        }
+      }
+    },
+
+    jshint: {
+      options: {
+        jshintrc: '.jshintrc',
+        reporter: require('jshint-stylish')
+      },
+      all: {
+        src: [
+          'Gruntfile.js',
+          'src/{,*/}*.js'
+        ]
+      },
+      test: {
+        options: {
+          jshintrc: 'test/.jshintrc'
+        },
+        src: ['test/spec/{,*/}*.js']
+      }
+    },
+
     karma: {
       unit: {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    less: {
+      development: {
+        files: {
+          '<%= yeoman.dist %>/css/britney.css': ' styles/britney.less'
+        }
+      }
+    },
+
+    uglify: {
+       dist: {
+         files: {
+           '<%= yeoman.dist %>/js/britney.min.js': [
+             'src/britney.module.js',
+             'src/britney.factory.js',
+             'src/britney.controller.js',
+             'src/britney.directive.js'
+           ]
+         }
+       }
+    },
+
+    yeoman: {
+      dist: 'dist'
     }
   });
 
@@ -114,16 +110,16 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'clean:dist',
+    'clean',
     'less',
     'cssmin',
-    'uglify',
     'concat',
-    'copy:less'
+    'uglify',
+    'copy'
   ]);
 
   grunt.registerTask('default', [
-    'newer:jshint',
+    'jshint',
     'test',
     'build'
   ]);
