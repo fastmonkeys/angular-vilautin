@@ -87,6 +87,16 @@ module.exports = function (grunt) {
       }
     },
 
+    ngAnnotate: {
+      dist: {
+        files: {
+          '<%= yeoman.dist %>/js/britney.js': [
+             '<%= yeoman.dist %>/js/britney.js'
+           ]
+        }
+      }
+    },
+
     uglify: {
        dist: {
          files: {
@@ -114,6 +124,7 @@ module.exports = function (grunt) {
     'less',
     'cssmin',
     'concat',
+    'ngAnnotate',
     'uglify',
     'copy'
   ]);

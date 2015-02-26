@@ -2,7 +2,7 @@
   'use strict';
   angular
     .module('britney')
-    .factory('Britney', ['$rootScope', 'NOTIFICATION_EVENT', 'SEVERITIES', BritneyService]);
+    .factory('Britney', BritneyService);
 
   function BritneyService($rootScope, NOTIFICATION_EVENT, SEVERITIES) {
     var riggedNotifications = [];

@@ -3,8 +3,7 @@
 
 angular
   .module('britney')
-  .controller('BritneyController', [
-    '$rootScope', '$timeout', 'DOC_URL', 'NOTIFICATION_SHOW_TIME', BritneyController]);
+  .controller('BritneyController', BritneyController);
 
     function BritneyController($rootScope, $timeout, DOC_URL, NOTIFICATION_SHOW_TIME) {
       var vm = this;

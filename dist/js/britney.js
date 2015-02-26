@@ -8,7 +8,7 @@
   'use strict';
   angular
     .module('britney')
-    .factory('Britney', ['$rootScope', 'NOTIFICATION_EVENT', 'SEVERITIES', BritneyService]);
+    .factory('Britney', BritneyService);
 
   function BritneyService($rootScope, NOTIFICATION_EVENT, SEVERITIES) {
     var riggedNotifications = [];
@@ -92,6 +92,7 @@
       return prefix + uniqueIdCounter++;
     }
   }
+  BritneyService.$inject = ["$rootScope", "NOTIFICATION_EVENT", "SEVERITIES"];
 })();
 
 (function() {
@@ -99,8 +100,7 @@
 
 angular
   .module('britney')
-  .controller('BritneyController', [
-    '$rootScope', '$timeout', 'DOC_URL', 'NOTIFICATION_SHOW_TIME', BritneyController]);
+  .controller('BritneyController', BritneyController);
 
     function BritneyController($rootScope, $timeout, DOC_URL, NOTIFICATION_SHOW_TIME) {
       var vm = this;
@@ -148,6 +148,7 @@ angular
         }
       }
     }
+    BritneyController.$inject = ["$rootScope", "$timeout", "DOC_URL", "NOTIFICATION_SHOW_TIME"];
 })();
 
 'use strict';
