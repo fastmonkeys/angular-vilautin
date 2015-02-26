@@ -50,10 +50,10 @@ module.exports = function (grunt) {
        dist: {
          files: {
            '<%= yeoman.dist %>/js/britney.min.js': [
-             'src/britney.js',
-             'src/notification-service.js',
-             'src/notification-controller.js',
-             'src/britney-flasher.js'
+             'src/britney.module.js',
+             'src/britney.factory.js',
+             'src/britney.controller.js',
+             'src/britney.directive.js'
            ]
          }
        }
@@ -77,7 +77,12 @@ module.exports = function (grunt) {
 
     concat: {
       dist: {
-        src: ['src/britney.js', 'src/notification-service.js', 'src/notification-controller.js', 'src/britney-flasher.js'],
+        src: [
+          'src/britney.module.js',
+          'src/britney.factory.js',
+          'src/britney.controller.js',
+          'src/britney.directive.js'
+        ],
         dest: '<%= yeoman.dist %>/js/britney.js'
       }
     },
@@ -90,9 +95,7 @@ module.exports = function (grunt) {
             dot: true,
             cwd: 'styles/',
             dest: '<%= yeoman.dist %>/less',
-            src: [
-              'britney.less'
-            ]
+            src: ['britney.less']
           }
         ]
       }

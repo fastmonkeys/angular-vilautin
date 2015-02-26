@@ -10,10 +10,11 @@ module.exports = function(config) {
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-animate/angular-animate.js',
-      'src/britney.js',
-      'src/notification-controller.js',
-      'src/notification-service.js',
-      'src/britney-flasher.js',
+      'src/britney.module.js',
+      'src/britney.constants.js',
+      'src/britney.controller.js',
+      'src/britney.factory.js',
+      'src/britney.directive.js',
       'test/*_spec.js'
     ],
 
