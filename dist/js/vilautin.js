@@ -169,7 +169,6 @@ angular.module('vilautin')
           'ng-click="ctrl.removeNotification(id)">' +
             '<span class="message">{{ notification.message }}</span>' +
         '</div>',
-      restrict: 'E',
       controller: 'VilautinController',
       controllerAs: 'ctrl'
     };
