@@ -4,13 +4,14 @@ describe('vilautinService', function() {
   var notifications;
   var $rootScope;
   var testStateName = 'testState';
-  var notificationEvent = 'event:add-notification';
+  var NOTIFICATION_EVENT;
 
   beforeEach(angular.mock.module('vilautin'));
 
-  beforeEach(angular.mock.inject(function(_$rootScope_, _Vilautin_) {
+  beforeEach(angular.mock.inject(function(_$rootScope_, _Vilautin_, _NOTIFICATION_EVENT_) {
     $rootScope = _$rootScope_;
     Vilautin = _Vilautin_;
+    NOTIFICATION_EVENT = _NOTIFICATION_EVENT_;
     notifications = [];
     spyOn($rootScope, '$broadcast').andCallThrough();
   }));
@@ -27,7 +28,7 @@ describe('vilautinService', function() {
 
       it('should trigger notification event', function() {
         expect($rootScope.$broadcast.callCount).toBe(1);
-        expect($rootScope.$broadcast.mostRecentCall.args[0]).toBe(notificationEvent);
+        expect($rootScope.$broadcast.mostRecentCall.args[0]).toBe(NOTIFICATION_EVENT);
       });
 
       describe('notification parameters', function() {
@@ -61,7 +62,7 @@ describe('vilautinService', function() {
 
         it('should trigger notification event', function() {
           expect($rootScope.$broadcast.callCount).toBe(1);
-          expect($rootScope.$broadcast.mostRecentCall.args[0]).toBe(notificationEvent);
+          expect($rootScope.$broadcast.mostRecentCall.args[0]).toBe(NOTIFICATION_EVENT);
         });
 
         describe('notification parameters', function() {
@@ -95,7 +96,7 @@ describe('vilautinService', function() {
 
         it('should trigger notification event', function() {
             expect($rootScope.$broadcast.callCount).toBe(1);
-            expect($rootScope.$broadcast.mostRecentCall.args[0]).toBe(notificationEvent);
+            expect($rootScope.$broadcast.mostRecentCall.args[0]).toBe(NOTIFICATION_EVENT);
           });
 
         describe('notification parameters', function() {
@@ -141,7 +142,7 @@ describe('vilautinService', function() {
 
             it('should not trigger notification event', function() {
               expect($rootScope.$broadcast.callCount).toBe(1);
-              expect($rootScope.$broadcast.mostRecentCall.args[0]).not.toBe(notificationEvent);
+              expect($rootScope.$broadcast.mostRecentCall.args[0]).not.toBe(NOTIFICATION_EVENT);
             });
           });
 
@@ -153,7 +154,7 @@ describe('vilautinService', function() {
             it('should show the notification', function() {
               expect($rootScope.$broadcast.callCount).toBe(2);
               var broadCastArgs = $rootScope.$broadcast.mostRecentCall.args;
-              expect(broadCastArgs[0]).toBe(notificationEvent);
+              expect(broadCastArgs[0]).toBe(NOTIFICATION_EVENT);
               expect(broadCastArgs[1].message).toBe('Hello World!');
             });
 
@@ -165,7 +166,7 @@ describe('vilautinService', function() {
 
               it('should not show any new notifications', function() {
                 expect($rootScope.$broadcast.callCount).toBe(1);
-                expect($rootScope.$broadcast.mostRecentCall.args[0]).not.toBe(notificationEvent);
+                expect($rootScope.$broadcast.mostRecentCall.args[0]).not.toBe(NOTIFICATION_EVENT);
               });
             });
           });
@@ -181,8 +182,8 @@ describe('vilautinService', function() {
                 expect($rootScope.$broadcast.callCount).toBe(3);
                 var firstBroadcastArgs = $rootScope.$broadcast.calls[1].args;
                 var secondBroadcastArgs = $rootScope.$broadcast.calls[2].args;
-                expect(firstBroadcastArgs[0]).toBe(notificationEvent);
-                expect(secondBroadcastArgs[0]).toBe(notificationEvent);
+                expect(firstBroadcastArgs[0]).toBe(NOTIFICATION_EVENT);
+                expect(secondBroadcastArgs[0]).toBe(NOTIFICATION_EVENT);
                 expect(firstBroadcastArgs[1].message).toBe('Hello World 2!');
                 expect(secondBroadcastArgs[1].message).toBe('Hello World!');
               });
@@ -198,7 +199,7 @@ describe('vilautinService', function() {
               it('should show only one notifications', function() {
                 expect($rootScope.$broadcast.callCount).toBe(2);
                 var args = $rootScope.$broadcast.mostRecentCall.args;
-                expect(args[0]).toBe(notificationEvent);
+                expect(args[0]).toBe(NOTIFICATION_EVENT);
                 expect(args[1].message).toBe('Hello World!');
               });
             });

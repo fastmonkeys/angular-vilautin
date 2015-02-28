@@ -3,6 +3,7 @@ describe('VilautinController', function() {
   var $rootScope;
   var $timeout;
   var appendNotification;
+  var NOTIFICATION_EVENT;
   var flashNotification = {
     id: 'notification_1',
     message: 'Test',
@@ -17,10 +18,11 @@ describe('VilautinController', function() {
   };
 
   beforeEach(angular.mock.module('vilautin'));
-  beforeEach(angular.mock.inject(function(_$timeout_, _$rootScope_, $controller) {
+  beforeEach(angular.mock.inject(function(_$timeout_, _$rootScope_,  _NOTIFICATION_EVENT_, $controller) {
     jasmine.Clock.useMock();
     $timeout = _$timeout_;
     $rootScope = _$rootScope_;
+    NOTIFICATION_EVENT = _NOTIFICATION_EVENT_;
     controller = $controller('VilautinController');
   }));
 
@@ -52,13 +54,13 @@ describe('VilautinController', function() {
     });
 
   it('should add notification to the scope when add-notification event is triggered', function() {
-      $rootScope.$broadcast('event:add-notification', stickyNotification);
+    $rootScope.$broadcast(NOTIFICATION_EVENT, stickyNotification);
       $rootScope.$digest();
       expect(controller.notifications[stickyNotification.id]).not.toBeUndefined();
     });
 
   it('should remove flash notification from the scope after 5 seconds', function() {
-    $rootScope.$broadcast('event:add-notification', flashNotification);
+    $rootScope.$broadcast(NOTIFICATION_EVENT, flashNotification);
     $rootScope.$digest();
 
     expect(controller.notifications[flashNotification.id]).not.toBeUndefined();
@@ -73,7 +75,7 @@ describe('VilautinController', function() {
   describe('Notification validation', function() {
     beforeEach(angular.mock.inject(function($controller) {
       spyOn($rootScope, '$on').andCallFake(function(eventName, callback) {
-        if (eventName === 'event:add-notification') {
+        if (eventName === NOTIFICATION_EVENT) {
           appendNotification = callback;
           $rootScope.$on.andCallThrough();
         }
