@@ -13,7 +13,7 @@ Dependencies
 Installation
 -----------
 ```
-$ bower install --save git@github.com:fastmonkeys/vilautin.git
+$ bower install --save git@github.com:fastmonkeys/angular-vilautin.git#1.0.0-rc
 ```
 
 Setting up the module
