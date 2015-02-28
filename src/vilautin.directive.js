@@ -1,6 +1,6 @@
 'use strict';
-angular.module('britney')
-  .directive('britneyNotifications', function () {
+angular.module('vilautin')
+  .directive('vilautinNotifications', function () {
     return {
       template:
         '<div ' +
@@ -10,7 +10,7 @@ angular.module('britney')
             '<span class="message">{{ notification.message }}</span>' +
         '</div>',
       restrict: 'E',
-      controller: 'BritneyController',
+      controller: 'VilautinController',
       controllerAs: 'ctrl'
     };
   });

@@ -1,16 +1,16 @@
-describe('britneyService', function() {
+describe('vilautinService', function() {
 
-  var Britney;
+  var Vilautin;
   var notifications;
   var $rootScope;
   var testStateName = 'testState';
   var notificationEvent = 'event:add-notification';
 
-  beforeEach(angular.mock.module('britney'));
+  beforeEach(angular.mock.module('vilautin'));
 
-  beforeEach(angular.mock.inject(function(_$rootScope_, _Britney_) {
+  beforeEach(angular.mock.inject(function(_$rootScope_, _Vilautin_) {
     $rootScope = _$rootScope_;
-    Britney = _Britney_;
+    Vilautin = _Vilautin_;
     notifications = [];
     spyOn($rootScope, '$broadcast').andCallThrough();
   }));
@@ -22,7 +22,7 @@ describe('britneyService', function() {
   describe('flash()', function() {
     describe('with string parameter', function() {
       beforeEach(function() {
-        Britney.flash('Hello World!');
+        Vilautin.flash('Hello World!');
       });
 
       it('should trigger notification event', function() {
@@ -53,7 +53,7 @@ describe('britneyService', function() {
     describe('with object parameter', function() {
       describe('without stateName property and sticky value', function() {
         beforeEach(function() {
-          Britney.flash({
+          Vilautin.flash({
             message: 'Hello World!',
             severity: 'warning'
           });
@@ -86,7 +86,7 @@ describe('britneyService', function() {
 
       describe('without stateName property but with sticky value', function() {
         beforeEach(function() {
-          Britney.flash({
+          Vilautin.flash({
             message: 'Hello World!',
             severity: 'warning',
             sticky: true
@@ -120,7 +120,7 @@ describe('britneyService', function() {
 
       describe('with stateName property', function() {
         beforeEach(function() {
-          Britney.flash({
+          Vilautin.flash({
             message: 'Hello World!',
             severity: 'warning',
             sticky: true,
@@ -173,7 +173,7 @@ describe('britneyService', function() {
           describe('when there is multiple notifications', function() {
             describe('and all of them are rigged to the new state', function() {
               beforeEach(function() {
-                Britney.flash({message: 'Hello World 2!', stateName: testStateName});
+                Vilautin.flash({message: 'Hello World 2!', stateName: testStateName});
                 $rootScope.$broadcast('$stateChangeSuccess', {name: testStateName});
               });
 
@@ -191,7 +191,7 @@ describe('britneyService', function() {
             describe('and only one is rigged to the new state', function() {
               beforeEach(function() {
                 $rootScope.$broadcast.reset();
-                Britney.flash({message: 'Hello World 2!', stateName: 'otherState'});
+                Vilautin.flash({message: 'Hello World 2!', stateName: 'otherState'});
                 $rootScope.$broadcast('$stateChangeSuccess', {name: testStateName});
               });
 

@@ -1,16 +1,16 @@
 {
-  "name": "britney",
+  "name": "vilautin",
   "version": "1.0.0",
   "authors": [
     "Roope Hovi <roope.hovi@gmail.com>"
   ],
   "description": "AngularJS powered flash notification service",
   "main": [
-    "dist/js/britney.js",
-    "dist/js/britney.min.js",
-    "dist/css/britney.css",
-    "dist/css/britney.min.css",
-    "dist/less/britney.less"
+    "dist/js/vilautin.js",
+    "dist/js/vilautin.min.js",
+    "dist/css/vilautin.css",
+    "dist/css/vilautin.min.css",
+    "dist/less/vilautin.less"
   ],
   "keywords": [
     "notification"

@@ -1,8 +1,8 @@
 (function() {
   'use strict';
   angular
-    .module('britney')
-    .factory('Britney', BritneyService);
+    .module('vilautin')
+    .factory('Vilautin', BritneyService);
 
   function BritneyService($rootScope, NOTIFICATION_EVENT, SEVERITIES) {
     var riggedNotifications = [];

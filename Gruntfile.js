@@ -22,12 +22,12 @@ module.exports = function (grunt) {
     concat: {
       dist: {
         src: [
-          'src/britney.module.js',
-          'src/britney.factory.js',
-          'src/britney.controller.js',
-          'src/britney.directive.js'
+          'src/vilautin.module.js',
+          'src/vilautin.factory.js',
+          'src/vilautin.controller.js',
+          'src/vilautin.directive.js'
         ],
-        dest: '<%= yeoman.dist %>/js/britney.js'
+        dest: '<%= yeoman.dist %>/js/vilautin.js'
       }
     },
 
@@ -39,7 +39,7 @@ module.exports = function (grunt) {
             dot: true,
             cwd: 'styles/',
             dest: '<%= yeoman.dist %>/less',
-            src: ['britney.less']
+            src: ['vilautin.less']
           }
         ]
       }
@@ -48,7 +48,7 @@ module.exports = function (grunt) {
     cssmin: {
       default: {
         files: {
-          '<%= yeoman.dist %>/css/britney.min.css': '<%= yeoman.dist %>/css/britney.css'
+          '<%= yeoman.dist %>/css/vilautin.min.css': '<%= yeoman.dist %>/css/vilautin.css'
         }
       }
     },
@@ -82,7 +82,7 @@ module.exports = function (grunt) {
     less: {
       development: {
         files: {
-          '<%= yeoman.dist %>/css/britney.css': ' styles/britney.less'
+          '<%= yeoman.dist %>/css/vilautin.css': ' styles/vilautin.less'
         }
       }
     },
@@ -90,8 +90,8 @@ module.exports = function (grunt) {
     ngAnnotate: {
       dist: {
         files: {
-          '<%= yeoman.dist %>/js/britney.js': [
-             '<%= yeoman.dist %>/js/britney.js'
+          '<%= yeoman.dist %>/js/vilautin.js': [
+             '<%= yeoman.dist %>/js/vilautin.js'
            ]
         }
       }
@@ -100,11 +100,11 @@ module.exports = function (grunt) {
     uglify: {
        dist: {
          files: {
-           '<%= yeoman.dist %>/js/britney.min.js': [
-             'src/britney.module.js',
-             'src/britney.factory.js',
-             'src/britney.controller.js',
-             'src/britney.directive.js'
+           '<%= yeoman.dist %>/js/vilautin.min.js': [
+             'src/vilautin.module.js',
+             'src/vilautin.factory.js',
+             'src/vilautin.controller.js',
+             'src/vilautin.directive.js'
            ]
          }
        }

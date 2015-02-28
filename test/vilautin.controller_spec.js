@@ -1,4 +1,4 @@
-describe('BritneyController', function() {
+describe('VilautinController', function() {
   var controller;
   var $rootScope;
   var $timeout;
@@ -16,12 +16,12 @@ describe('BritneyController', function() {
     sticky: true
   };
 
-  beforeEach(angular.mock.module('britney'));
+  beforeEach(angular.mock.module('vilautin'));
   beforeEach(angular.mock.inject(function(_$timeout_, _$rootScope_, $controller) {
     jasmine.Clock.useMock();
     $timeout = _$timeout_;
     $rootScope = _$rootScope_;
-    controller = $controller('BritneyController');
+    controller = $controller('VilautinController');
   }));
 
   it('should have a correct initial state', function() {
@@ -78,27 +78,27 @@ describe('BritneyController', function() {
           $rootScope.$on.andCallThrough();
         }
       });
-      controller = $controller('BritneyController');
+      controller = $controller('VilautinController');
     }));
 
     it('does not add invalid notifications to the scope when invalid message', function() {
       var invalidNotification = angular.extend({}, stickyNotification, {message: 123});
-      var message = '(Britney) notification message must be a String. Please read docs at ' +
-        'https://github.com/fastmonkeys/britney';
+      var message = '(Vilautin) notification message must be a String. Please read docs at ' +
+        'https://github.com/fastmonkeys/vilautin';
       expect(function() {appendNotification({}, invalidNotification)}).toThrow(message);
     });
 
     it('does not add invalid notifications to the scope when invalid severity', function() {
       var invalidNotification = angular.extend({}, stickyNotification, { severity: ['error'] });
-      var message = '(Britney) notification severity value is not supported. Please read docs at ' +
-        'https://github.com/fastmonkeys/britney';
+      var message = '(Vilautin) notification severity value is not supported. Please read docs at ' +
+        'https://github.com/fastmonkeys/vilautin';
       expect(function() {appendNotification({}, invalidNotification)}).toThrow(message);
     });
 
     it('does not add invalid notifications to the scope when invalid sticky value', function() {
       var invalidNotification = angular.extend({}, stickyNotification, { sticky: 'like syrup' });
-      var message = '(Britney) notification sticky value must be a Boolean. Please read docs at ' +
-        'https://github.com/fastmonkeys/britney';
+      var message = '(Vilautin) notification sticky value must be a Boolean. Please read docs at ' +
+        'https://github.com/fastmonkeys/vilautin';
       expect(function() {appendNotification({}, invalidNotification)}).toThrow(message);
     });
   });

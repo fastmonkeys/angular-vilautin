@@ -1,14 +1,14 @@
 (function() {
   'use strict';
   angular
-    .module('britney', []);
+    .module('vilautin', []);
 })();
 
 (function() {
   'use strict';
   angular
-    .module('britney')
-    .factory('Britney', BritneyService);
+    .module('vilautin')
+    .factory('Vilautin', BritneyService);
 
   function BritneyService($rootScope, NOTIFICATION_EVENT, SEVERITIES) {
     var riggedNotifications = [];
@@ -102,8 +102,8 @@
   'use strict';
 
 angular
-  .module('britney')
-  .controller('BritneyController', BritneyController);
+  .module('vilautin')
+  .controller('VilautinController', BritneyController);
 
     function BritneyController($rootScope, $window, DOC_URL, NOTIFICATION_SHOW_TIME) {
       var vm = this;
@@ -145,13 +145,13 @@ angular
         var isValidStickyProperty = typeof notification.sticky === 'boolean';
 
         if (!isValidNotificationMessage) {
-          throw new Error('(Britney) notification message must be a String. Please read docs at ' + DOC_URL);
+          throw new Error('(Vilautin) notification message must be a String. Please read docs at ' + DOC_URL);
         }
         if (!isValidNotificationSeverity) {
-          throw new Error('(Britney) notification severity value is not supported. Please read docs at ' + DOC_URL);
+          throw new Error('(Vilautin) notification severity value is not supported. Please read docs at ' + DOC_URL);
         }
         if(!isValidStickyProperty) {
-          throw new Error('(Britney) notification sticky value must be a Boolean. Please read docs at ' + DOC_URL);
+          throw new Error('(Vilautin) notification sticky value must be a Boolean. Please read docs at ' + DOC_URL);
         }
       }
     }
@@ -159,8 +159,8 @@ angular
 })();
 
 'use strict';
-angular.module('britney')
-  .directive('britneyNotifications', function () {
+angular.module('vilautin')
+  .directive('vilautinNotifications', function () {
     return {
       template:
         '<div ' +
@@ -170,7 +170,7 @@ angular.module('britney')
             '<span class="message">{{ notification.message }}</span>' +
         '</div>',
       restrict: 'E',
-      controller: 'BritneyController',
+      controller: 'VilautinController',
       controllerAs: 'ctrl'
     };
   });
