@@ -3,9 +3,6 @@ describe('britneyService', function() {
   var Britney;
   var notifications;
   var $rootScope;
-  var testMessage = 'Your computer is about to melt down!';
-  var testSeverity = 'warning';
-  var defaultSeverity = 'info';
   var testStateName = 'testState';
   var notificationEvent = 'event:add-notification';
 
@@ -22,160 +19,192 @@ describe('britneyService', function() {
     $rootScope.$broadcast.reset();
   });
 
-  function getAndTestNextNotification() {
-    var args = $rootScope.$broadcast.mostRecentCall.args;
-    var eventName = args[0];
-    var notification = args[1];
-    expect(eventName).toBe(notificationEvent);
-    expect(angular.isObject(notification)).toBe(true);
-    expect(notification.id).toMatch('notification_');
-    return notification;
-  }
+  describe('flash()', function() {
+    describe('with string parameter', function() {
+      beforeEach(function() {
+        Britney.flash('Hello World!');
+      });
 
-  it('showFlashNotification emits a add-notification event with the correct message, ' +
-  'stickiness and severity', function() {
-    var notification;
-    Britney.showFlashNotification({
-      message: testMessage,
-      severity: testSeverity
+      it('should trigger notification event', function() {
+        expect($rootScope.$broadcast.callCount).toBe(1);
+        expect($rootScope.$broadcast.mostRecentCall.args[0]).toBe(notificationEvent);
+      });
+
+      describe('notification parameters', function() {
+        var notification;
+        beforeEach(function() {
+          notification = $rootScope.$broadcast.mostRecentCall.args[1];
+        });
+
+        it('should have a correct message property', function() {
+          expect(notification.message).toBe('Hello World!');
+        });
+
+        it('should have default severity', function() {
+          expect(notification.severity).toBe('info');
+        });
+
+        it('should have default sticky value', function() {
+          expect(notification.sticky).toBe(false);
+        });
+      });
     });
 
-    expect($rootScope.$broadcast.callCount).toBe(1);
+    describe('with object parameter', function() {
+      describe('without stateName property and sticky value', function() {
+        beforeEach(function() {
+          Britney.flash({
+            message: 'Hello World!',
+            severity: 'warning'
+          });
+        });
 
-    notification = getAndTestNextNotification();
-    expect(notification.message).toBe(testMessage);
-    expect(notification.severity).toBe(testSeverity);
-    expect(notification.sticky).toBe(false);
-  });
+        it('should trigger notification event', function() {
+          expect($rootScope.$broadcast.callCount).toBe(1);
+          expect($rootScope.$broadcast.mostRecentCall.args[0]).toBe(notificationEvent);
+        });
 
-  it('showFlashNotification emits an add-notification event with the correct message and ' +
-  'severity, and with default severity', function() {
-    var notification;
-    Britney.showFlashNotification({
-      message: testMessage
+        describe('notification parameters', function() {
+          var notification;
+          beforeEach(function() {
+            notification = $rootScope.$broadcast.mostRecentCall.args[1];
+          });
+
+          it('should have a correct message property', function() {
+            expect(notification.message).toBe('Hello World!');
+          });
+
+          it('should have given severity', function() {
+            expect(notification.severity).toBe('warning');
+          });
+
+          it('should have default sticky value', function() {
+            expect(notification.sticky).toBe(false);
+          });
+        });
+      });
+
+      describe('without stateName property but with sticky value', function() {
+        beforeEach(function() {
+          Britney.flash({
+            message: 'Hello World!',
+            severity: 'warning',
+            sticky: true
+          });
+        });
+
+        it('should trigger notification event', function() {
+            expect($rootScope.$broadcast.callCount).toBe(1);
+            expect($rootScope.$broadcast.mostRecentCall.args[0]).toBe(notificationEvent);
+          });
+
+        describe('notification parameters', function() {
+            var notification;
+            beforeEach(function() {
+              notification = $rootScope.$broadcast.mostRecentCall.args[1];
+            });
+
+            it('should have a correct message property', function() {
+              expect(notification.message).toBe('Hello World!');
+            });
+
+            it('should have given severity', function() {
+              expect(notification.severity).toBe('warning');
+            });
+
+            it('should have given sticky value', function() {
+              expect(notification.sticky).toBe(true);
+            });
+          });
+      });
+
+      describe('with stateName property', function() {
+        beforeEach(function() {
+          Britney.flash({
+            message: 'Hello World!',
+            severity: 'warning',
+            sticky: true,
+            stateName: testStateName
+          });
+        });
+
+        it('should not trigger notification event straight away', function() {
+          expect($rootScope.$broadcast).not.toHaveBeenCalled();
+        });
+
+        describe('on state change', function() {
+
+          describe('to state where notification should not show up', function() {
+            beforeEach(function() {
+              $rootScope.$broadcast('$stateChangeSuccess', {name: 'otherState'});
+            });
+
+            it('should not trigger notification event', function() {
+              expect($rootScope.$broadcast.callCount).toBe(1);
+              expect($rootScope.$broadcast.mostRecentCall.args[0]).not.toBe(notificationEvent);
+            });
+          });
+
+          describe('to state where notification should be shown', function() {
+            beforeEach(function() {
+              $rootScope.$broadcast('$stateChangeSuccess', {name: testStateName});
+            });
+
+            it('should show the notification', function() {
+              expect($rootScope.$broadcast.callCount).toBe(2);
+              var broadCastArgs = $rootScope.$broadcast.mostRecentCall.args;
+              expect(broadCastArgs[0]).toBe(notificationEvent);
+              expect(broadCastArgs[1].message).toBe('Hello World!');
+            });
+
+            describe('navigating to the new state again', function() {
+              beforeEach(function() {
+                $rootScope.$broadcast.reset();
+                $rootScope.$broadcast('$stateChangeSuccess', {name: testStateName});
+              });
+
+              it('should not show any new notifications', function() {
+                expect($rootScope.$broadcast.callCount).toBe(1);
+                expect($rootScope.$broadcast.mostRecentCall.args[0]).not.toBe(notificationEvent);
+              });
+            });
+          });
+
+          describe('when there is multiple notifications', function() {
+            describe('and all of them are rigged to the new state', function() {
+              beforeEach(function() {
+                Britney.flash({message: 'Hello World 2!', stateName: testStateName});
+                $rootScope.$broadcast('$stateChangeSuccess', {name: testStateName});
+              });
+
+              it('should show both notifications', function() {
+                expect($rootScope.$broadcast.callCount).toBe(3);
+                var firstBroadcastArgs = $rootScope.$broadcast.calls[1].args;
+                var secondBroadcastArgs = $rootScope.$broadcast.calls[2].args;
+                expect(firstBroadcastArgs[0]).toBe(notificationEvent);
+                expect(secondBroadcastArgs[0]).toBe(notificationEvent);
+                expect(firstBroadcastArgs[1].message).toBe('Hello World 2!');
+                expect(secondBroadcastArgs[1].message).toBe('Hello World!');
+              });
+            });
+
+            describe('and only one is rigged to the new state', function() {
+              beforeEach(function() {
+                $rootScope.$broadcast.reset();
+                Britney.flash({message: 'Hello World 2!', stateName: 'otherState'});
+                $rootScope.$broadcast('$stateChangeSuccess', {name: testStateName});
+              });
+
+              it('should show only one notifications', function() {
+                expect($rootScope.$broadcast.callCount).toBe(2);
+                var args = $rootScope.$broadcast.mostRecentCall.args;
+                expect(args[0]).toBe(notificationEvent);
+                expect(args[1].message).toBe('Hello World!');
+              });
+            });
+          });
+        });
+      });
     });
-
-    expect($rootScope.$broadcast.callCount).toBe(1);
-
-    notification = getAndTestNextNotification();
-    expect(notification.message).toBe(testMessage);
-    expect(notification.severity).toBe(defaultSeverity);
-    expect(notification.sticky).toBe(false);
   });
-
-  it('showStickyNotification emits an add-notification event with the correct message, ' +
-  'stickiness and severity', function() {
-    var notification;
-    Britney.showStickyNotification({
-      message: testMessage,
-      severity: testSeverity
-    });
-
-    expect($rootScope.$broadcast.callCount).toBe(1);
-
-    notification = getAndTestNextNotification();
-    expect(notification.message).toBe(testMessage);
-    expect(notification.severity).toBe(testSeverity);
-    expect(notification.sticky).toBe(true);
-  });
-
-  it('showStickyNotification emits an add-notification event with the message and severity, ' +
-  'with the correct default severity', function() {
-    var notification;
-    Britney.showStickyNotification({
-      message: testMessage
-    });
-
-    expect($rootScope.$broadcast.callCount).toBe(1);
-
-    notification = getAndTestNextNotification();
-    expect(notification.message).toBe(testMessage);
-    expect(notification.severity).toBe(defaultSeverity);
-    expect(notification.sticky).toBe(true);
-  });
-
-  it('dispatchRiggedNotifications emits nothing if there are no notifications rigged to the ' +
-  'given route', function() {
-    var notification;
-    Britney.rigRouteNotification({
-      message: testMessage,
-      severity: testSeverity,
-      sticky: true
-    }, testStateName);
-
-    expect($rootScope.$broadcast.callCount).toBe(0);
-
-    $rootScope.$broadcast('$stateChangeSuccess', {name: 'otherState'});
-    // should not broadcast other events
-    expect($rootScope.$broadcast.callCount).toBe(1);
-  });
-
-  it('dispatchRiggedNotifications emits one add-notification event with the correct message, ' +
-  'stickiness and severity, when one notification is rigged to the correct route', function() {
-    var notification;
-    Britney.rigRouteNotification({
-      message: testMessage,
-      severity: testSeverity,
-      sticky: true
-    }, testStateName);
-
-    Britney.rigRouteNotification({
-      message: 'blah',
-      severity: 'success'
-    }, 'otherState');
-
-    // event is not dispatched immediately
-    expect($rootScope.$broadcast.callCount).toBe(0);
-
-    $rootScope.$broadcast('$stateChangeSuccess', {name: testStateName});
-    expect($rootScope.$broadcast.callCount).toBe(2);
-
-    notification = getAndTestNextNotification();
-    expect(notification.message).toBe(testMessage);
-    expect(notification.severity).toBe(testSeverity);
-    expect(notification.sticky).toBe(true);
-  });
-
-  it('calling dispatchRiggedNotifications multiple times does not dispatch any additional events',
-    function() {
-      Britney.rigRouteNotification({
-        message: testMessage,
-        severity: testSeverity,
-        sticky: true
-      }, testStateName);
-
-      Britney.rigRouteNotification({
-        message: 'blah',
-        severity: 'success'
-      }, 'otherState');
-
-      // event is not dispatched immediately
-      expect($rootScope.$broadcast.callCount).toBe(0);
-
-      $rootScope.$broadcast('$stateChangeSuccess', {name: testStateName});
-      expect($rootScope.$broadcast.callCount).toBe(2);
-
-      $rootScope.$broadcast('$stateChangeSuccess', {name: testStateName});
-      expect($rootScope.$broadcast.callCount).toBe(3);
-    });
-
-  it('dispatchRiggedNotifications emits one add-notification event with the correct message, ' +
-  'and default stickiness and severity, when one notification is rigged to the correct route',
-    function() {
-      var notification;
-      Britney.rigRouteNotification({
-        message: testMessage
-      }, testStateName);
-
-      // event is not dispatched immediately
-      expect($rootScope.$broadcast.callCount).toBe(0);
-
-      $rootScope.$broadcast('$stateChangeSuccess', {name: testStateName});
-      expect($rootScope.$broadcast.callCount).toBe(2);
-
-      notification = getAndTestNextNotification();
-      expect(notification.message).toBe(testMessage);
-      expect(notification.severity).toBe(defaultSeverity);
-      expect(notification.sticky).toBe(false);
-    });
 });

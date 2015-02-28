@@ -5,7 +5,7 @@ angular
   .module('britney')
   .controller('BritneyController', BritneyController);
 
-    function BritneyController($rootScope, $timeout, DOC_URL, NOTIFICATION_SHOW_TIME) {
+    function BritneyController($rootScope, $window, DOC_URL, NOTIFICATION_SHOW_TIME) {
       var vm = this;
       vm.notifications = {};
       vm.removeNotification = removeNotification;
@@ -25,8 +25,9 @@ angular
         var id = notification.id;
         vm.notifications[id] = notification;
         if (!notification.sticky) {
-          $timeout(function() {
+          $window.setTimeout(function() {
             removeNotification(id);
+            $rootScope.$apply();
           }, NOTIFICATION_SHOW_TIME);
         }
       }
@@ -36,6 +37,9 @@ angular
       }
 
       function validateNotification(notification) {
+        if (angular.isString(notification)) {
+          return;
+        }
         var isValidNotificationMessage = angular.isString(notification.message);
         var isValidNotificationSeverity = angular.isString(notification.severity);
         var isValidStickyProperty = typeof notification.sticky === 'boolean';

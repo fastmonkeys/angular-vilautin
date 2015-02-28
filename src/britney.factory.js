@@ -7,9 +7,6 @@
   function BritneyService($rootScope, NOTIFICATION_EVENT, SEVERITIES) {
     var riggedNotifications = [];
     var uniqueIdCounter = 0;
-    var stickyDefaults = {
-      sticky: true
-    };
     var notificationDefaults = {
       sticky: false,
       severity: 'info'
@@ -18,10 +15,20 @@
     startListeningStateChange();
 
     return {
-      showFlashNotification: showFlashNotification,
-      showStickyNotification: showStickyNotification,
-      rigRouteNotification: rigRouteNotification
+      flash: flash
     };
+
+    function flash(notification) {
+      if (angular.isString(notification)) {
+        showFlashNotification({message: notification});
+      } else if (notification.stateName) {
+        var stateName = notification.stateName;
+        delete notification.stateName;
+        rigRouteNotification(notification, stateName);
+      } else {
+        showFlashNotification(notification);
+      }
+    }
 
     function startListeningStateChange() {
       $rootScope.$on('$stateChangeSuccess', dispatchRiggedNotificationForState);
@@ -32,17 +39,13 @@
     }
 
     function showFlashNotification(notification) {
-      sendNotification(pickNotificationProperties(notification));
-    }
-
-    function showStickyNotification(notification) {
-      var filteredProperties = pickNotificationProperties(notification);
-      angular.extend(filteredProperties, stickyDefaults);
-      sendNotification(filteredProperties);
+      var pickedProperties = pickNotificationProperties(notification);
+      sendNotification(angular.extend({}, notificationDefaults, pickedProperties));
     }
 
     function rigRouteNotification(notification, route) {
-      riggedNotifications.push([route, pickNotificationProperties(notification)]);
+      var pickedProperties = pickNotificationProperties(notification);
+      riggedNotifications.push([route, angular.extend({}, notificationDefaults, pickedProperties)]);
     }
 
     function dispatchRiggedNotifications(route) {

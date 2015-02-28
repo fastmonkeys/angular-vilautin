@@ -18,16 +18,17 @@ describe('BritneyController', function() {
 
   beforeEach(angular.mock.module('britney'));
   beforeEach(angular.mock.inject(function(_$timeout_, _$rootScope_, $controller) {
+    jasmine.Clock.useMock();
     $timeout = _$timeout_;
     $rootScope = _$rootScope_;
     controller = $controller('BritneyController');
   }));
 
-  it('has the correct initial state', function() {
+  it('should have a correct initial state', function() {
     expect(angular.isObject(controller.notifications)).toBe(true);
   });
 
-  it('removes correct notification when calling removeNotification', function() {
+  it('should remove correct notification when calling removeNotification', function() {
     controller.notifications = { 
       'notification_2': stickyNotification
     };
@@ -37,8 +38,7 @@ describe('BritneyController', function() {
     expect(controller.notifications[stickyNotification.id]).toBeUndefined();
   });
 
-  it('empties all notifications when the $stateChangeStart event is triggered for $rootScope',
-    function() {
+  it('should empty all notifications when the $stateChangeStart is triggered', function() {
       controller.notifications = {
         'notification_2': stickyNotification
       };
@@ -51,23 +51,22 @@ describe('BritneyController', function() {
 
     });
 
-  it('adds notification to the scope when add-notification -event is triggered on $rootScope',
-    function() {
+  it('should add notification to the scope when add-notification event is triggered', function() {
       $rootScope.$broadcast('event:add-notification', stickyNotification);
       $rootScope.$digest();
       expect(controller.notifications[stickyNotification.id]).not.toBeUndefined();
     });
 
-  it('removes flash notification from the scope after 5 seconds', function() {
+  it('should remove flash notification from the scope after 5 seconds', function() {
     $rootScope.$broadcast('event:add-notification', flashNotification);
     $rootScope.$digest();
 
     expect(controller.notifications[flashNotification.id]).not.toBeUndefined();
 
-    $timeout.flush(4999);
+    jasmine.Clock.tick(4999);
     expect(controller.notifications[flashNotification.id]).not.toBeUndefined();
 
-    $timeout.flush(1);
+    jasmine.Clock.tick(1);
     expect(controller.notifications[flashNotification.id]).toBeUndefined();
   });
 

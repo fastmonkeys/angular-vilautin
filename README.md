@@ -8,7 +8,7 @@ AngularJS powered flash notification service for easily showing flash notificati
 Dependencies
 -----
 - AngularJS 1.3.*
-- [UI router](https://github.com/angular-ui/ui-router) (if you want to use `Britney.rigRouteNotification`)
+- [UI router](https://github.com/angular-ui/ui-router) (if you want to use `Britney.flash` with `stateName` param)
 
 Installation
 -----------
@@ -49,25 +49,22 @@ angular
   .module('yourAwesomeApp')
   .controller('SomeCtrl', function(Britney) {
     var notificationObj = {
-      message: 'Please login in order to continue',
-      severity: 'warning'
+      message: 'Notication object for more control over notification',
+      severity: 'warning',
+      sticky: true
     };
-    Britney.showFlashNotification(notificationObj);
-    Britney.showStickyNotification(notificationObj);
-    Britney.rigRouteNotification(notificationObj, 'nextStateName');
+    Britney.flash(notificationObj);
+    Britney.flash('Flash a notification with default params like this!');
 });
 ```
 
 ###Functions
 
-- `showFlashNotification(notificationObj)`: shows flash notification immediately and removes it after 5 seconds.
-
-- `showStickyNotification(notificationObj)`: shows flash notification immediately and does not remove it automatically. The notification is removed when it is clicked.
-
-- `rigRouteNotification(notificationObj, nextStateName)`: shows flash notification immediately after navigation has happened to `ui.router` state with name `nextStateName`. This is useful when you want to e.g. redirect user to some state and show flash notification immediately in the new state. (Assumes [UI router](https://github.com/angular-ui/ui-router) is loaded. If you don't use UI router, this function can't be used)
+- `flash(messageString)`: shows a flash notification immediately with default parameters
+- `flash(notificationObj)`: shows flash notification according to the `notificationObj`
 
 ###Notification object
-Notification object that is passed to functions `showFlashNotification()`, `showStickyNotification()` and `rigRouteNotification()` has the following properties.
+Notification object that is passed to function `flash()` and it can have the following properties.
 
 ```js
 var notificationObj = {
@@ -78,6 +75,10 @@ var notificationObj = {
   
   // Boolean value defining whether the notification is sticky and doesn't
   // remove itself
-  sticky: true // default: false
+  sticky: true, // default: false
+  
+  // String ui-router state name. This is used for showing notification
+  // right after state has changed. Must be called in the previous state
+  stateName: 'loginState' // assumes ui-router is loaded already
 }
 ```

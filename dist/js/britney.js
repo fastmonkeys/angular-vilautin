@@ -13,9 +13,6 @@
   function BritneyService($rootScope, NOTIFICATION_EVENT, SEVERITIES) {
     var riggedNotifications = [];
     var uniqueIdCounter = 0;
-    var stickyDefaults = {
-      sticky: true
-    };
     var notificationDefaults = {
       sticky: false,
       severity: 'info'
@@ -24,10 +21,20 @@
     startListeningStateChange();
 
     return {
-      showFlashNotification: showFlashNotification,
-      showStickyNotification: showStickyNotification,
-      rigRouteNotification: rigRouteNotification
+      flash: flash
     };
+
+    function flash(notification) {
+      if (angular.isString(notification)) {
+        showFlashNotification({message: notification});
+      } else if (notification.stateName) {
+        var stateName = notification.stateName;
+        delete notification.stateName;
+        rigRouteNotification(notification, stateName);
+      } else {
+        showFlashNotification(notification);
+      }
+    }
 
     function startListeningStateChange() {
       $rootScope.$on('$stateChangeSuccess', dispatchRiggedNotificationForState);
@@ -38,17 +45,13 @@
     }
 
     function showFlashNotification(notification) {
-      sendNotification(pickNotificationProperties(notification));
-    }
-
-    function showStickyNotification(notification) {
-      var filteredProperties = pickNotificationProperties(notification);
-      angular.extend(filteredProperties, stickyDefaults);
-      sendNotification(filteredProperties);
+      var pickedProperties = pickNotificationProperties(notification);
+      sendNotification(angular.extend({}, notificationDefaults, pickedProperties));
     }
 
     function rigRouteNotification(notification, route) {
-      riggedNotifications.push([route, pickNotificationProperties(notification)]);
+      var pickedProperties = pickNotificationProperties(notification);
+      riggedNotifications.push([route, angular.extend({}, notificationDefaults, pickedProperties)]);
     }
 
     function dispatchRiggedNotifications(route) {
@@ -102,7 +105,7 @@ angular
   .module('britney')
   .controller('BritneyController', BritneyController);
 
-    function BritneyController($rootScope, $timeout, DOC_URL, NOTIFICATION_SHOW_TIME) {
+    function BritneyController($rootScope, $window, DOC_URL, NOTIFICATION_SHOW_TIME) {
       var vm = this;
       vm.notifications = {};
       vm.removeNotification = removeNotification;
@@ -122,8 +125,9 @@ angular
         var id = notification.id;
         vm.notifications[id] = notification;
         if (!notification.sticky) {
-          $timeout(function() {
+          $window.setTimeout(function() {
             removeNotification(id);
+            $rootScope.$apply();
           }, NOTIFICATION_SHOW_TIME);
         }
       }
@@ -133,6 +137,9 @@ angular
       }
 
       function validateNotification(notification) {
+        if (angular.isString(notification)) {
+          return;
+        }
         var isValidNotificationMessage = angular.isString(notification.message);
         var isValidNotificationSeverity = angular.isString(notification.severity);
         var isValidStickyProperty = typeof notification.sticky === 'boolean';
@@ -148,7 +155,7 @@ angular
         }
       }
     }
-    BritneyController.$inject = ["$rootScope", "$timeout", "DOC_URL", "NOTIFICATION_SHOW_TIME"];
+    BritneyController.$inject = ["$rootScope", "$window", "DOC_URL", "NOTIFICATION_SHOW_TIME"];
 })();
 
 'use strict';
@@ -156,14 +163,12 @@ angular.module('britney')
   .directive('britneyNotifications', function () {
     return {
       template:
-      '<div class="britney-notifications">' +
         '<div ' +
           'ng-repeat="(id, notification) in ctrl.notifications" ' +
           'class="notification {{notification.severity}}" ' +
           'ng-click="ctrl.removeNotification(id)">' +
             '<span class="message">{{ notification.message }}</span>' +
-        '</div>' +
-      '</div>',
+        '</div>',
       restrict: 'E',
       controller: 'BritneyController',
       controllerAs: 'ctrl'
