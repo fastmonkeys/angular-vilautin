@@ -15,7 +15,7 @@
   "keywords": [
     "notification"
   ],
-  "license": "Copyright © Fast Monkeys",
+  "license": "MIT",
   "private": true,
   "ignore": [
     "node_modules",
@@ -33,7 +33,8 @@
   ],
   "dependencies": {
     "angular": "1.3.*",
-    "angular-animate": "1.3.*"
+    "angular-animate": "1.3.*",
+    "angular-vilautin": "git@github.com:fastmonkeys/angular-vilautin.git#1.0.0-rc"
   },
   "devDependencies": {
     "angular-mocks": "1.3.*"
