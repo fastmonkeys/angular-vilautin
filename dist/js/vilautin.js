@@ -8,9 +8,9 @@
   'use strict';
   angular
     .module('vilautin')
-    .factory('Vilautin', BritneyService);
+    .factory('Vilautin', VilautinService);
 
-  function BritneyService($rootScope, NOTIFICATION_EVENT, SEVERITIES) {
+  function VilautinService($rootScope, NOTIFICATION_EVENT, SEVERITIES) {
     var riggedNotifications = [];
     var uniqueIdCounter = 0;
     var notificationDefaults = {
@@ -95,7 +95,7 @@
       return prefix + uniqueIdCounter++;
     }
   }
-  BritneyService.$inject = ["$rootScope", "NOTIFICATION_EVENT", "SEVERITIES"];
+  VilautinService.$inject = ["$rootScope", "NOTIFICATION_EVENT", "SEVERITIES"];
 })();
 
 (function() {
@@ -103,9 +103,9 @@
 
 angular
   .module('vilautin')
-  .controller('VilautinController', BritneyController);
+  .controller('VilautinController', VilautinController);
 
-    function BritneyController($rootScope, $window, DOC_URL, NOTIFICATION_SHOW_TIME) {
+    function VilautinController($rootScope, $window, DOC_URL, NOTIFICATION_SHOW_TIME) {
       var vm = this;
       vm.notifications = {};
       vm.removeNotification = removeNotification;
@@ -155,7 +155,7 @@ angular
         }
       }
     }
-    BritneyController.$inject = ["$rootScope", "$window", "DOC_URL", "NOTIFICATION_SHOW_TIME"];
+    VilautinController.$inject = ["$rootScope", "$window", "DOC_URL", "NOTIFICATION_SHOW_TIME"];
 })();
 
 'use strict';

@@ -2,9 +2,9 @@
   'use strict';
   angular
     .module('vilautin')
-    .factory('Vilautin', BritneyService);
+    .factory('Vilautin', VilautinService);
 
-  function BritneyService($rootScope, NOTIFICATION_EVENT, SEVERITIES) {
+  function VilautinService($rootScope, NOTIFICATION_EVENT, SEVERITIES) {
     var riggedNotifications = [];
     var uniqueIdCounter = 0;
     var notificationDefaults = {

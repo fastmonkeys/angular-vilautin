@@ -3,9 +3,9 @@
 
 angular
   .module('vilautin')
-  .controller('VilautinController', BritneyController);
+  .controller('VilautinController', VilautinController);
 
-    function BritneyController($rootScope, $window, DOC_URL, NOTIFICATION_SHOW_TIME) {
+    function VilautinController($rootScope, $window, DOC_URL, NOTIFICATION_SHOW_TIME) {
       var vm = this;
       vm.notifications = {};
       vm.removeNotification = removeNotification;
