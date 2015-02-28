@@ -7,9 +7,7 @@
   "description": "AngularJS powered flash notification service",
   "main": [
     "dist/js/vilautin.js",
-    "dist/js/vilautin.min.js",
     "dist/css/vilautin.css",
-    "dist/css/vilautin.min.css",
     "dist/less/vilautin.less"
   ],
   "keywords": [
