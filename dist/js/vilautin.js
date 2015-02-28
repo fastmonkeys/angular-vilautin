@@ -105,14 +105,15 @@ angular
   .module('vilautin')
   .controller('VilautinController', VilautinController);
 
-    function VilautinController($rootScope, $window, DOC_URL, NOTIFICATION_SHOW_TIME) {
+    function VilautinController(
+      $rootScope, $window, DOC_URL, NOTIFICATION_EVENT, NOTIFICATION_SHOW_TIME) {
       var vm = this;
       vm.notifications = {};
       vm.removeNotification = removeNotification;
       activate();
 
       function activate() {
-        $rootScope.$on('event:add-notification', appendNotification);
+        $rootScope.$on(NOTIFICATION_EVENT, appendNotification);
         $rootScope.$on('$stateChangeStart', emptyNotifications);
       }
 
@@ -155,7 +156,7 @@ angular
         }
       }
     }
-    VilautinController.$inject = ["$rootScope", "$window", "DOC_URL", "NOTIFICATION_SHOW_TIME"];
+    VilautinController.$inject = ["$rootScope", "$window", "DOC_URL", "NOTIFICATION_EVENT", "NOTIFICATION_SHOW_TIME"];
 })();
 
 'use strict';
