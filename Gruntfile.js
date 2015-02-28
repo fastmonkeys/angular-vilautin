@@ -1,18 +1,57 @@
 'use strict';
 
 module.exports = function (grunt) {
-
   require('load-grunt-tasks')(grunt);
-
   require('time-grunt')(grunt);
 
-  var appConfig = {
-    dist: 'dist'
-  };
 
   grunt.initConfig({
+    clean: {
+      dist: {
+        files: [{
+          dot: true,
+          src: [
+            '.tmp',
+            '<%= yeoman.dist %>/{,*/}*',
+            '!<%= yeoman.dist %>/.git*'
+          ]
+        }]
+      }
+    },
 
-    yeoman: appConfig,
+    concat: {
+      dist: {
+        src: [
+          'src/vilautin.module.js',
+          'src/vilautin.factory.js',
+          'src/vilautin.controller.js',
+          'src/vilautin.directive.js'
+        ],
+        dest: '<%= yeoman.dist %>/js/vilautin.js'
+      }
+    },
+
+    copy: {
+      less: {
+        files: [
+          {
+            expand: true,
+            dot: true,
+            cwd: 'styles/',
+            dest: '<%= yeoman.dist %>/less',
+            src: ['vilautin.less']
+          }
+        ]
+      }
+    },
+
+    cssmin: {
+      default: {
+        files: {
+          '<%= yeoman.dist %>/css/vilautin.min.css': '<%= yeoman.dist %>/css/vilautin.css'
+        }
+      }
+    },
 
     jshint: {
       options: {
@@ -33,76 +72,46 @@ module.exports = function (grunt) {
       }
     },
 
-    clean: {
+    karma: {
+      unit: {
+        configFile: 'test/karma.conf.js',
+        singleRun: true
+      }
+    },
+
+    less: {
+      development: {
+        files: {
+          '<%= yeoman.dist %>/css/vilautin.css': ' styles/vilautin.less'
+        }
+      }
+    },
+
+    ngAnnotate: {
       dist: {
-        files: [{
-          dot: true,
-          src: [
-            '.tmp',
-            '<%= yeoman.dist %>/{,*/}*',
-            '!<%= yeoman.dist %>/.git*'
-          ]
-        }]
+        files: {
+          '<%= yeoman.dist %>/js/vilautin.js': [
+             '<%= yeoman.dist %>/js/vilautin.js'
+           ]
+        }
       }
     },
 
     uglify: {
        dist: {
          files: {
-           '<%= yeoman.dist %>/js/britney.min.js': [
-             'src/britney.js',
-             'src/notification-service.js',
-             'src/notification-controller.js',
-             'src/britney-flasher.js'
+           '<%= yeoman.dist %>/js/vilautin.min.js': [
+             'src/vilautin.module.js',
+             'src/vilautin.factory.js',
+             'src/vilautin.controller.js',
+             'src/vilautin.directive.js'
            ]
          }
        }
     },
 
-    less: {
-      development: {
-        files: {
-          '<%= yeoman.dist %>/css/britney.css': ' styles/britney.less'
-        }
-      }
-    },
-
-    cssmin: {
-      default: {
-        files: {
-          '<%= yeoman.dist %>/css/britney.min.css': '<%= yeoman.dist %>/css/britney.css'
-        }
-      }
-    },
-
-    concat: {
-      dist: {
-        src: ['src/britney.js', 'src/notification-service.js', 'src/notification-controller.js', 'src/britney-flasher.js'],
-        dest: '<%= yeoman.dist %>/js/britney.js'
-      }
-    },
-
-    copy: {
-      less: {
-        files: [
-          {
-            expand: true,
-            dot: true,
-            cwd: 'styles/',
-            dest: '<%= yeoman.dist %>/less',
-            src: [
-              'britney.less'
-            ]
-          }
-        ]
-      }
-    },
-
-    karma: {
-      unit: {
-        configFile: 'test/karma.conf.js',
-        singleRun: true
-      }
+    yeoman: {
+      dist: 'dist'
     }
   });
 
@@ -111,16 +120,17 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'clean:dist',
+    'clean',
     'less',
     'cssmin',
-    'uglify',
     'concat',
-    'copy:less'
+    'ngAnnotate',
+    'uglify',
+    'copy'
   ]);
 
   grunt.registerTask('default', [
-    'newer:jshint',
+    'jshint',
     'test',
     'build'
   ]);
