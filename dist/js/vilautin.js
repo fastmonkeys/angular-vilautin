@@ -8,6 +8,16 @@
   'use strict';
   angular
     .module('vilautin')
+    .constant('DOC_URL', 'https://github.com/fastmonkeys/vilautin')
+    .constant('NOTIFICATION_EVENT', 'vilautin:add-notification')
+    .constant('SEVERITIES', ['info', 'success', 'warning'])
+    .constant('NOTIFICATION_SHOW_TIME', 5000);
+})();
+
+(function() {
+  'use strict';
+  angular
+    .module('vilautin')
     .factory('Vilautin', VilautinService);
 
   function VilautinService($rootScope, NOTIFICATION_EVENT, SEVERITIES) {

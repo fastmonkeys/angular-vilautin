@@ -23,6 +23,7 @@ module.exports = function (grunt) {
       dist: {
         src: [
           'src/vilautin.module.js',
+          'src/vilautin.constants.js',
           'src/vilautin.factory.js',
           'src/vilautin.controller.js',
           'src/vilautin.directive.js'
@@ -102,6 +103,7 @@ module.exports = function (grunt) {
          files: {
            '<%= yeoman.dist %>/js/vilautin.min.js': [
              'src/vilautin.module.js',
+             'src/vilautin.constants.js',
              'src/vilautin.factory.js',
              'src/vilautin.controller.js',
              'src/vilautin.directive.js'
